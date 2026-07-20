@@ -38,6 +38,8 @@ export function mergeBonus(manualBonus, knockoutData) {
     r16: manualBonus.r16?.length > 0 ? manualBonus.r16 : (knockoutData.r16 || []),
     qf:  manualBonus.qf?.length  > 0 ? manualBonus.qf  : (knockoutData.qf  || []),
     sf:  manualBonus.sf?.length  > 0 ? manualBonus.sf   : (knockoutData.sf  || []),
+    // ESPN scoreboard does not provide the tournament top scorer, so this is manual.
+    topscorer: manualBonus.topscorer || null,
     winner: manualBonus.winner || knockoutData.winner || null,
   };
 }

@@ -8,6 +8,7 @@ const GROUP_FINISH_KEYS = [
 export default function BonusPanel({ bonusResults, manualBonus, knockoutData, fullOverrides, onClose }) {
   const [gf, setGf] = useState(() => ({ ...(manualBonus.groupFinishes || {}) }));
   const [winner, setWinner] = useState(manualBonus.winner || '');
+  const [topscorer, setTopscorer] = useState(manualBonus.topscorer || '');
   const [copied, setCopied] = useState(false);
 
   const setGfVal = (key, val) => setGf(prev => ({ ...prev, [key]: val }));
@@ -17,6 +18,8 @@ export default function BonusPanel({ bonusResults, manualBonus, knockoutData, fu
     bonusClean.groupFinishes = gf;
     if (winner) bonusClean.winner = winner;
     else delete bonusClean.winner;
+    if (topscorer) bonusClean.topscorer = topscorer;
+    else delete bonusClean.topscorer;
     // Keep existing manual r16/qf/sf if set, but don't expose them for editing (auto now)
     const next = { ...fullOverrides, bonus: bonusClean };
     return JSON.stringify(next, null, 2);
@@ -88,6 +91,22 @@ export default function BonusPanel({ bonusResults, manualBonus, knockoutData, fu
             emptyMsg="Ingen semifinalister fundet endnu — opdateres automatisk"
           />
 
+          {/* Bonusrunde 5 — Topscorer (manual) */}
+          <div className="bonus-admin-section">
+            <div className="bonus-section-header-row">
+              <h3 className="bonus-admin-title">Bonusrunde 5 — Topscorer (40 pt) ✏️</h3>
+            </div>
+            <div className="bonus-admin-row">
+              <label className="bonus-admin-label">Topscorer</label>
+              <input
+                className="bonus-admin-input"
+                placeholder="Skriv topscorer..."
+                value={topscorer}
+                onChange={e => setTopscorer(e.target.value)}
+              />
+            </div>
+          </div>
+
           {/* Bonusrunde 5 — Vinder (auto + manuel fallback) */}
           <div className="bonus-admin-section">
             <div className="bonus-section-header-row">
@@ -115,7 +134,7 @@ export default function BonusPanel({ bonusResults, manualBonus, knockoutData, fu
 
         <div className="modal-footer modal-footer--column">
           <div className="publish-instructions">
-            <strong>Kun bonusrunde 1 og vinderen (hvis nødvendig) skal opdateres manuelt.</strong>
+            <strong>Bonusrunde 1, topscorer og vinderen (hvis nødvendig) skal opdateres manuelt.</strong>
             <p style={{marginTop:'0.3rem'}}>R16, QF og SF opdateres automatisk fra ESPN. Tryk "Kopiér JSON" og commit til GitHub som normalt.</p>
             <ol style={{marginTop:'0.4rem'}}>
               <li>Tryk "Kopiér JSON" herunder</li>
